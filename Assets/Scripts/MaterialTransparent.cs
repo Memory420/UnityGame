@@ -1,9 +1,11 @@
+using TMPro;
 using UnityEngine;
 
 public class TransparencyIncrease : MonoBehaviour
 {
     public bool StartFading = false;
     public float fadingDuration = 1f;
+    public bool Collected = false;
 
     private new Renderer renderer;
     private Material material;
@@ -11,9 +13,17 @@ public class TransparencyIncrease : MonoBehaviour
     private float initialAlpha;
     private float fadingTimer = 0f;
     public bool DoActive = true;
+    public ScoreDealer scoredealer;
+    public TMP_Text coinsText;
 
     private void Start()
     {
+        scoredealer = GameObject.FindObjectOfType<ScoreDealer>();
+        GameObject scoreScreen = GameObject.Find("Ёкран очков");
+        if (scoreScreen != null)
+        {
+            coinsText = scoreScreen.GetComponent<TMP_Text>();
+        }
         renderer = GetComponent<Renderer>();
         material = renderer.material;
         initialAlpha = material.color.a;
@@ -43,5 +53,19 @@ public class TransparencyIncrease : MonoBehaviour
         Color color = material.color;
         color.a = alpha;
         material.color = color;
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.name == "PlayerObj" || collision.collider.tag == "Coin")
+        {
+            string coinsValue = scoredealer.coins.ToString();
+            coinsText.text = "Coins: " + coinsValue;
+            StartFading = true;
+            if (!Collected)
+            {
+                scoredealer.coins += 1;
+            }
+            Collected = true;
+        }
     }
 }

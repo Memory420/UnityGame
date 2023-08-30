@@ -7,12 +7,7 @@ public class ScoreUpdater : MonoBehaviour
     public Score Score;
     public TMP_Text coinsText;
 
-    private ScoreDealer scoreDealerScript;
-
-    private void Start()
-    {
-        coinsText = GetComponent<TMP_Text>();
-    }
+    public ScoreDealer scoreDealerScript;
 
     private void Update()
     {
