@@ -2,32 +2,57 @@ using UnityEngine;
 
 public class DynamicFrictionChange : MonoBehaviour
 {
-    public PhysicMaterial frictionLow;
-    public PhysicMaterial frictionHigh;
-    public PhysicMaterial frictionNormal;
+    public GameObject playerObj;
+    private Collider playerObjCollider;
 
-    private Collider playerCollider;
+    private bool touchingFloor = false;
+    private bool touchingWall = false;
 
     void Start()
     {
-        playerCollider = GetComponent<Collider>();
+        if (playerObj != null)
+        {
+            playerObjCollider = playerObj.GetComponent<Collider>();
+        }
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnCollisionStay(Collision collision)
     {
-        if (collision.gameObject.tag == "Slippery")
+        touchingFloor = false;
+        touchingWall = false;
+
+        foreach (ContactPoint contact in collision.contacts)
         {
-            playerCollider.material = frictionLow;
-            Debug.Log("Slippery");
+            Vector3 normal = contact.normal;
+
+            if (normal.y > 0.9f)
+            {
+                touchingFloor = true;
+            }
+            else if (Mathf.Approximately(normal.y, 0f))
+            {
+                touchingWall = true;
+            }
         }
-        else if (collision.gameObject.tag == "Sticky")
+
+        // Устанавливаем значение Dynamic Friction
+        if (touchingFloor && !touchingWall)
         {
-            playerCollider.material = frictionHigh;
-            Debug.Log("Sticky");
+            SetDynamicFriction(0.6f);
         }
         else
         {
-            playerCollider.material = frictionNormal;
+            SetDynamicFriction(0f);
+        }
+    }
+
+    // Устанавливаем значение Dynamic Friction и выводим его в консоль
+    void SetDynamicFriction(float value)
+    {
+        if (playerObjCollider != null && playerObjCollider.material != null)
+        {
+            playerObjCollider.material.dynamicFriction = value;
+            Debug.Log("Dynamic Friction set to: " + value);
         }
     }
 }

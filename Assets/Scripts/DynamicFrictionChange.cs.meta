@@ -3,7 +3,10 @@ guid: 27b241e74121ee447a6580be3ea62575
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - frictionLow: {instanceID: 0}
+  - frictionHigh: {instanceID: 0}
+  - frictionNormal: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
