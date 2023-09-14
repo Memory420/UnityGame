@@ -35,7 +35,6 @@ public class DynamicFrictionChange : MonoBehaviour
             }
         }
 
-        // Устанавливаем значение Dynamic Friction
         if (touchingFloor && !touchingWall)
         {
             SetDynamicFriction(0.6f);
@@ -46,13 +45,11 @@ public class DynamicFrictionChange : MonoBehaviour
         }
     }
 
-    // Устанавливаем значение Dynamic Friction и выводим его в консоль
     void SetDynamicFriction(float value)
     {
         if (playerObjCollider != null && playerObjCollider.material != null)
         {
             playerObjCollider.material.dynamicFriction = value;
-            Debug.Log("Dynamic Friction set to: " + value);
         }
     }
 }
